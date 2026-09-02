@@ -114,9 +114,12 @@ def _generate_structured_response(
                 },
             },
             temperature=0,
+            max_completion_tokens=4096,
         )
 
         content = response.choices[0].message.content
+
+        print("GROQ RAW CONTENT:", repr(content))
 
         if not content:
             raise AIAnalysisError(
@@ -164,6 +167,22 @@ Do NOT include generic words such as:
 
 Return only useful job-related keywords.
 
+EDUCATION REQUIREMENT:
+
+Before generating the final answer, carefully scan the entire RESUME
+for the EDUCATION section and identify every education record.
+
+For example, if the resume contains:
+
+B.Tech ... 2027
+XII ... 2023
+X ... 2021
+
+then the education list MUST contain all three records.
+
+Do not summarize them into one record.
+Do not omit school-level education.
+
 JOB DESCRIPTION:
 
 {job_description}
@@ -196,18 +215,31 @@ Analyze the resume provided below.
 
 IMPORTANT RULES:
 
+IMPORTANT RULES:
+
 1. Do not invent information.
-2. If information is not present, return an empty string or empty list.
-3. Extract skills only when they are present or clearly demonstrated.
-4. Evaluate the resume objectively.
-5. Give a resume score from 0 to 100.
-6. Provide practical improvement suggestions.
-7. Identify important ATS keywords present in the resume.
-8. For LinkedIn and GitHub, return the complete URL only if an actual
+2. Extract information directly from the resume text.
+3. If information is not present, return an empty string or empty list.
+4. Extract skills only when they are present or clearly demonstrated.
+5. Evaluate the resume objectively.
+6. Give a resume score from 0 to 100.
+7. Provide practical improvement suggestions.
+8. Identify important ATS keywords present in the resume.
+
+9. EDUCATION EXTRACTION IS IMPORTANT:
+   - Extract EVERY education entry explicitly mentioned in the resume.
+   - Do NOT return only the highest or most recent degree.
+   - Include undergraduate degrees such as B.Tech/B.E.
+   - Include Class XII / 12th / Higher Secondary education if present.
+   - Include Class X / 10th / Secondary education if present.
+   - Include diplomas or other formal education if present.
+   - Preserve each education entry as a separate object in the education list.
+   - Never omit an education entry simply because another degree is more advanced.
+   - Use the actual institution and year stated in the resume.
+   - Do not invent missing education information.
+
+10. For LinkedIn and GitHub, return the complete URL only if an actual
    URL is present in the resume.
-9. Never return labels such as "LinkedIn", "GitHub", "Profile",
-   or "Portfolio" as URLs.
-10. If no actual URL is present, return an empty string.
 
 If a job description is provided:
 
