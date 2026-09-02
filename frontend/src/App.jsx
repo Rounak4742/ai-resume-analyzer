@@ -3,7 +3,7 @@ import UploadForm from "./components/UploadForm";
 import ResultsDashboard from "./components/ResultsDashboard";
 import "./App.css";
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 const API_URL = `${API_BASE}/upload`;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_EXTENSIONS = [".pdf", ".docx"];

@@ -119,7 +119,7 @@ def _generate_structured_response(
 
         content = response.choices[0].message.content
 
-        print("GROQ RAW CONTENT:", repr(content))
+        
 
         if not content:
             raise AIAnalysisError(
@@ -167,21 +167,7 @@ Do NOT include generic words such as:
 
 Return only useful job-related keywords.
 
-EDUCATION REQUIREMENT:
 
-Before generating the final answer, carefully scan the entire RESUME
-for the EDUCATION section and identify every education record.
-
-For example, if the resume contains:
-
-B.Tech ... 2027
-XII ... 2023
-X ... 2021
-
-then the education list MUST contain all three records.
-
-Do not summarize them into one record.
-Do not omit school-level education.
 
 JOB DESCRIPTION:
 
