@@ -43,16 +43,25 @@ https://ai-resume-analyzer-frontend-bdme.onrender.com
 
 ## 📸 Screenshots
 
-Screenshots of the application will be added here.
+### Resume Upload
 
-<!--
-Add screenshots after creating them:
+![AI Resume Analyzer upload screen](assets/screenshots/upload-screen.png)
 
-![Resume Upload](docs/screenshots/upload.png)
+### Analysis Overview
 
-![Analysis Results](docs/screenshots/results.png)
--->
+![AI Resume Analyzer analysis overview](assets/screenshots/analysis-overview.png)
 
+### Detailed Resume Analysis
+
+![AI Resume Analyzer detailed analysis](assets/screenshots/detailed-results-1.png)
+
+### Recommendations and ATS Matching
+
+![AI Resume Analyzer recommendations and ATS matching](assets/screenshots/detailed-results-2.png)
+
+### Final Analysis Results
+
+![AI Resume Analyzer final analysis results](assets/screenshots/detailed-results-3.png)
 ## 🏗️ Architecture
 
 ```text
