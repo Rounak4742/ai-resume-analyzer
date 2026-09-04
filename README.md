@@ -1,12 +1,21 @@
 # AI Powered Resume Analyzer
 
-An AI-powered web application that analyzes PDF and DOCX resumes, extracts structured candidate information, evaluates resume quality, and calculates an ATS match score against a job description.
+An AI-powered full-stack web application that analyzes **PDF and DOCX resumes**, extracts structured candidate information, evaluates resume quality, and calculates an **ATS match score** against a job description.
 
-## Features
+The application combines **FastAPI, React, Groq AI, deterministic keyword matching, and automated testing** to provide actionable resume feedback through a web interface.
+
+## 🚀 Live Demo
+
+**Try the application:**
+https://ai-resume-analyzer-frontend-bdme.onrender.com
+
+> The live application may take a short time to respond if the deployment has been idle.
+
+## ✨ Features
 
 * Upload PDF and DOCX resumes
-* Maximum upload size of 5 MB
-* Automatic resume text extraction
+* Maximum file size of 5 MB
+* Automatic PDF and DOCX text extraction
 * Text cleaning and preprocessing
 * AI-powered resume analysis using Groq
 * Structured extraction of:
@@ -17,20 +26,133 @@ An AI-powered web application that analyzes PDF and DOCX resumes, extracts struc
   * Experience
   * Projects
   * Certifications
-* Extracts all education records, including B.Tech, Class XII, Class X, and other formal education when present
-* Resume quality score
-* Strengths and weaknesses
+* Detects multiple education records such as B.Tech, Class XII, Class X, and other formal education
+* Resume quality scoring
+* Strength and weakness analysis
 * Practical improvement suggestions
 * Optional job description analysis
-* ATS keyword extraction
+* Automatic job-related keyword extraction
+* ATS keyword matching
 * ATS match score
-* Matching and missing keyword detection
-* Temporary uploaded files are automatically deleted after processing
-* FastAPI REST API
-* React frontend
-* Automated backend tests with pytest
+* Detection of matching and missing keywords
+* Temporary uploaded files are deleted after processing
+* Input validation for unsupported, empty, corrupted, and oversized files
+* REST API built with FastAPI
+* React-based frontend
+* Automated backend testing with pytest
 
-## Tech Stack
+## 📸 Screenshots
+
+Screenshots of the application will be added here.
+
+<!--
+Add screenshots after creating them:
+
+![Resume Upload](docs/screenshots/upload.png)
+
+![Analysis Results](docs/screenshots/results.png)
+-->
+
+## 🏗️ Architecture
+
+```text
+                         User
+                           |
+                           v
+                  React + Vite Frontend
+                           |
+                           | PDF/DOCX
+                           | + Job Description
+                           v
+                    FastAPI Backend
+                           |
+             +-------------+-------------+
+             |             |             |
+             v             v             v
+       File Validation  Document      Text Cleaning
+                         Extraction
+                       PDF / DOCX
+                           |
+                           v
+                    Groq AI Analysis
+                           |
+                           v
+                  Structured Pydantic
+                       Response
+                           |
+                           v
+                  ATS Keyword Matching
+                           |
+                           v
+                  JSON API Response
+                           |
+                           v
+                  React Results UI
+```
+
+## 🧠 How It Works
+
+### 1. Resume Upload
+
+The user uploads a PDF or DOCX resume through the React frontend.
+
+The application validates:
+
+* File extension
+* File size
+* Empty files
+* Supported document formats
+
+The current maximum file size is **5 MB**.
+
+### 2. Text Extraction
+
+The backend extracts text using:
+
+* `pdfplumber` for PDF files
+* `python-docx` for DOCX files
+
+The extracted text is then cleaned and normalized before analysis.
+
+### 3. AI Resume Analysis
+
+The cleaned resume text is sent to the Groq API.
+
+The AI analyzes the resume and produces structured information including:
+
+* Candidate details
+* Skills
+* Education
+* Experience
+* Projects
+* Certifications
+* Resume score
+* Strengths
+* Weaknesses
+* Improvement suggestions
+* Relevant job keywords
+
+The response is validated using Pydantic schemas.
+
+### 4. ATS Analysis
+
+When a job description is provided, the application extracts relevant job keywords and compares them with the analyzed resume.
+
+The result includes:
+
+* ATS match score
+* Matching keywords
+* Missing keywords
+
+This provides a deterministic keyword-based ATS comparison rather than relying entirely on an AI-generated score.
+
+### 5. Temporary File Cleanup
+
+Uploaded resumes are stored temporarily during processing.
+
+The backend deletes the temporary uploaded file after processing, including after errors.
+
+## 🛠️ Tech Stack
 
 ### Backend
 
@@ -52,39 +174,20 @@ An AI-powered web application that analyzes PDF and DOCX resumes, extracts struc
 * JavaScript
 * CSS
 
-## Architecture
+### AI Model
+
+The application currently uses:
 
 ```text
-User
-  |
-  v
-React Frontend
-  |
-  | PDF/DOCX + Job Description
-  v
-FastAPI Backend
-  |
-  +--> File Validation
-  |
-  +--> PDF/DOCX Text Extraction
-  |
-  +--> Text Cleaning
-  |
-  +--> Groq AI Resume Analysis
-  |
-  +--> ATS Keyword Matching
-  |
-  v
-Structured API Response
-  |
-  v
-React Results Dashboard
+openai/gpt-oss-20b
 ```
 
-## Project Structure
+through the Groq API.
+
+## 📁 Project Structure
 
 ```text
-ai-resume-analyzer-two/
+ai-resume-analyzer/
 │
 ├── ai_analyzer.py
 ├── ats_analyzer.py
@@ -106,7 +209,6 @@ ai-resume-analyzer-two/
 ├── test_groq.py
 │
 ├── requirements.txt
-├── .env
 ├── .gitignore
 ├── README.md
 │
@@ -122,26 +224,28 @@ ai-resume-analyzer-two/
     └── ...
 ```
 
-## Requirements
+> The `.env`, `venv/`, uploaded resumes, Python cache files, and other local/generated files are intentionally excluded from version control.
 
-Before running the project, make sure you have:
+## ⚙️ Requirements
+
+Before running the project locally, install:
 
 * Python 3.14 or a compatible Python version
 * Node.js and npm
 * A Groq API key
 
-## Backend Setup
+## 🚀 Local Setup
 
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Rounak4742/ai-resume-analyzer.git
 cd ai-resume-analyzer
 ```
 
-Create a virtual environment:
+### 2. Create a Python virtual environment
 
-### Windows
+#### Windows
 
 ```bat
 python -m venv venv
@@ -153,11 +257,13 @@ Activate it:
 venv\Scripts\activate
 ```
 
-Install dependencies:
+### 3. Install backend dependencies
 
 ```bat
 pip install -r requirements.txt
 ```
+
+### 4. Configure the Groq API key
 
 Create a `.env` file in the project root:
 
@@ -165,9 +271,9 @@ Create a `.env` file in the project root:
 GROQ_API_KEY=your_groq_api_key
 ```
 
-Do not commit the `.env` file or expose your API key publicly.
+**Never commit `.env` or expose the API key publicly.**
 
-## Run the Backend
+### 5. Start the backend
 
 From the project root:
 
@@ -175,7 +281,7 @@ From the project root:
 venv\Scripts\python.exe -m uvicorn main:app --reload
 ```
 
-The backend will run at:
+The backend will be available at:
 
 ```text
 http://127.0.0.1:8000
@@ -187,9 +293,17 @@ Health check:
 http://127.0.0.1:8000/health
 ```
 
-## Frontend Setup
+Interactive API documentation:
 
-Open another terminal and navigate to the frontend:
+```text
+http://127.0.0.1:8000/docs
+```
+
+## 💻 Frontend Setup
+
+Open another terminal.
+
+Navigate to the frontend:
 
 ```bat
 cd frontend
@@ -213,9 +327,9 @@ The frontend will normally be available at:
 http://localhost:5173
 ```
 
-### API Configuration
+### Frontend API Configuration
 
-The frontend supports configuring the backend URL through the Vite environment variable:
+The frontend can be configured using the Vite environment variable:
 
 ```env
 VITE_API_BASE_URL=http://127.0.0.1:8000
@@ -227,7 +341,7 @@ If the variable is not provided, the frontend defaults to:
 http://127.0.0.1:8000
 ```
 
-## Using the Application
+## 📄 Using the Application
 
 1. Start the FastAPI backend.
 2. Start the React frontend.
@@ -235,56 +349,101 @@ http://127.0.0.1:8000
 4. Upload a PDF or DOCX resume.
 5. Optionally enter a job description.
 6. Click **Analyze Resume**.
-7. Review the resume score, ATS score, extracted information, keywords, strengths, weaknesses, and suggestions.
+7. Review the generated analysis.
 
-When a job description is provided, the application performs ATS matching against the extracted job-related keywords.
+The results can include:
 
-## API Endpoints
+* Resume score
+* ATS match score
+* Candidate information
+* Skills
+* Education
+* Experience
+* Projects
+* Certifications
+* Matching keywords
+* Missing keywords
+* Strengths
+* Weaknesses
+* Improvement suggestions
+
+## 🔌 API Endpoints
 
 ### `GET /`
 
-Returns a basic API status message.
+Returns the basic API status.
 
 ### `GET /health`
 
-Returns the health status of the backend.
+Returns the backend health status.
 
 ### `POST /upload`
 
-Accepts:
+Uploads a resume and optionally accepts a job description.
 
-* Resume file (`.pdf` or `.docx`)
-* Optional job description
+Supported files:
 
-Returns structured resume analysis and ATS results.
+```text
+.pdf
+.docx
+```
 
-## File Validation
+Maximum file size:
 
-The backend validates uploaded files before processing.
+```text
+5 MB
+```
 
-Current restrictions:
+The endpoint returns structured resume analysis and ATS results when a job description is provided.
 
-* Supported formats: PDF and DOCX
-* Maximum file size: 5 MB
-* Empty files are rejected
-* Corrupted PDF and DOCX files are handled
-* Temporary uploaded files are deleted after processing
+## 🛡️ File Validation & Error Handling
 
-## Testing
+The backend handles several invalid input scenarios.
 
-Run the complete backend test suite:
+### Supported formats
+
+```text
+PDF
+DOCX
+```
+
+### Maximum size
+
+```text
+5 MB
+```
+
+### Validation includes
+
+* Unsupported file extensions
+* Empty files
+* Files exceeding the size limit
+* Corrupted PDF files
+* Corrupted DOCX files
+* Document processing failures
+* Temporary file cleanup
+
+These cases are covered by the automated test suite.
+
+## 🧪 Testing
+
+The project includes automated backend tests using pytest.
+
+Run the complete test suite:
 
 ```bat
 venv\Scripts\python.exe -m pytest -v
 ```
 
-The project currently contains automated tests covering:
+### Current test coverage
+
+The test suite covers:
 
 * API home endpoint
 * Health endpoint
 * Unsupported file types
 * Empty files
-* Corrupted PDFs
+* Corrupted PDF files
 * Corrupted DOCX files
 * File size validation
 * Successful PDF uploads
@@ -295,9 +454,21 @@ The project currently contains automated tests covering:
 * PDF extraction
 * DOCX extraction
 
-## Production Frontend Build
+### Test Result
 
-To verify that the React application can be built for production:
+Current backend test suite:
+
+```text
+14 passed
+```
+
+```text
+====================== 14 passed in 73.06s ======================
+```
+
+## 📦 Production Build
+
+To verify the React frontend production build:
 
 ```bat
 cd frontend
@@ -310,41 +481,101 @@ The production files are generated in:
 frontend/dist/
 ```
 
-## Security Notes
+The production build currently completes successfully.
+
+## ☁️ Deployment
+
+The application is deployed using Render.
+
+### Production Frontend
+
+```text
+https://ai-resume-analyzer-frontend-bdme.onrender.com
+```
+
+The frontend communicates with the deployed FastAPI backend through the configured production API URL.
+
+The backend has been deployed separately and exposes the FastAPI REST API and health endpoint.
+
+## 🔐 Security & Privacy
+
+The project follows several basic security practices:
 
 * API keys are stored in environment variables.
 * `.env` is excluded from Git.
-* Uploaded resumes are stored temporarily during processing and deleted afterward.
-* PDF files are excluded from Git to prevent accidental commits of user resumes.
+* Uploaded resume files are temporary.
+* Uploaded files are deleted after processing.
+* Resume PDF files are excluded from Git.
+* File size and file type are validated before processing.
 
-## Current Scope
+**Important:** Users should avoid uploading sensitive documents containing information they do not want processed by a third-party AI service.
 
-The application currently supports:
+## ⚠️ Current Limitations
 
-* PDF resumes
-* DOCX resumes
-* Text-based document extraction
-* AI-powered resume analysis
-* ATS matching against job descriptions
+The current implementation intentionally focuses on text-based PDF and DOCX resumes.
 
-Scanned/image-only PDF OCR processing is intentionally outside the current scope.
+Currently not supported:
 
-## Future Improvements
+* OCR for scanned/image-only PDFs
+* User authentication
+* Persistent resume history
+* Database-backed analysis storage
+* Multiple-user accounts
+* Advanced semantic ATS ranking
+* Resume export functionality
 
-Potential future improvements include:
+## 🔮 Future Improvements
+
+Possible future improvements include:
 
 * OCR support for scanned resumes
 * User authentication
 * Resume history and saved analyses
 * Database-backed analysis storage
-* Deployment configuration
-* Automated CI/CD
-* More advanced ATS scoring
-* Better resume section detection
+* More advanced semantic ATS scoring
+* Improved resume section detection
+* Resume improvement/rewrite assistance
 * Exporting analysis results as PDF
+* Automated CI/CD
+* More comprehensive frontend testing
+* Better monitoring and observability
 
-## Author
+## 📌 Project Status
+
+The current version provides a working end-to-end resume analysis pipeline:
+
+```text
+Resume Upload
+      ↓
+File Validation
+      ↓
+PDF/DOCX Extraction
+      ↓
+Text Cleaning
+      ↓
+Groq AI Analysis
+      ↓
+Structured Validation
+      ↓
+ATS Keyword Matching
+      ↓
+Results Dashboard
+```
+
+The application has been tested locally and deployed successfully.
+
+## 👨‍💻 Author
 
 **Rounak Kumar**
 
-AI Powered Resume Analyzer built as a full-stack project using FastAPI, React, and Groq AI.
+AI Powered Resume Analyzer built as a full-stack project using:
+
+* FastAPI
+* React
+* Groq AI
+* Python
+* JavaScript
+
+---
+
+⭐ If you find this project useful, consider giving the repository a star.
